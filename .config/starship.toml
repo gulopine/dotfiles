@@ -1,0 +1,111 @@
+format = """
+$time\
+$status\
+$cmd_duration\
+$line_break\
+${custom.github}\
+$git_branch\
+$git_commit\
+$directory\
+$git_state\
+${custom.git_log}\
+$git_status\
+$line_break\
+$python\
+$env_var\
+$terraform\
+$aws\
+$character
+"""
+
+[aws]
+format = '[$symbol$profile]($style) '
+symbol = " "
+
+[character]
+format = "$symbol "
+
+[cmd_duration]
+format = "[祥$duration]($style)"
+style = "yellow"
+
+[directory]
+truncation_length = 0
+truncation_symbol = ""
+truncate_to_repo = false
+home_symbol = " "
+read_only = "  "
+style = ""
+
+[directory.substitutions]
+" /code/kraken-core" = ""
+" /code/octocloud" = ""
+" /code/dotfiles" = ""
+
+[env_var]
+format = "[$symbol$env_value]($style) "
+style = "yellow"
+symbol = "漣"
+variable = "DJANGO_CONFIGURATION"
+
+[custom.github]
+command = 'git remote get-url github | sed -En "s/https:\/\/.+\/(.+)\/(.+)(.git)$/\1\/\2\:/p"'
+when = "git remote get-url github"
+symbol = " "
+format = "[$symbol($output)]($style)"
+style = ""
+
+[custom.heroku]
+command = 'git remote get-url heroku | sed -En "s/https:\/\/.+\/(.+)\/(.+)(.git)$/\1\/\2\:/p"'
+when = "git remote get-url heroku"
+symbol = ":"
+format = "[$symbol($output)]($style)"
+style = ""
+
+[git_branch]
+format = "[$symbol$branch]($style)"
+symbol = ""
+style = "bold blue"
+
+[git_commit]
+tag_disabled = false
+only_detached = false
+format = "([\\[$tag\\]]($style))"
+
+[custom.git_log]
+command = 'git log master..HEAD --oneline | wc -l'
+when = 'git log master..HEAD -1 --oneline | grep .'
+symbol = " "
+format = "[$symbol($output)]($style) "
+style = "green"
+
+[git_status]
+format = '([$stashed$staged$conflicted$untracked$modified$renamed$deleted$ahead_behind](blue))'
+deleted = "[  $count](blue) "
+modified = "[ $count](blue) "
+renamed = "[凜$count](blue) "
+staged = "[ $count](green) "
+stashed = "[ $count](yellow) "
+untracked = "[ $count](blue) "
+conflicted = "[ $count](red) "
+ahead = "[ $count](green) "
+behind = "[ $count](green) "
+diverged = "[ $ahead_count](green) [ $behind_count](green) "
+disabled = false
+
+[python]
+format = '[${symbol}$virtualenv]($style) '
+symbol = " "
+style = "blue"
+
+[status]
+disabled = false
+format = "[$symbol $status]($style) "
+
+[time]
+format = "[$time]($style)"
+time_format = " %Y-%m-%d  %H:%M:%SZ "
+utc_time_offset = "0"
+disabled = false
+style = ""
+
