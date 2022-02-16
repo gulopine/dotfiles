@@ -1,70 +1,50 @@
 format = """
-$time\
-$status\
-$cmd_duration\
-$line_break\
-${custom.github}\
-$git_branch\
-$git_commit\
-$directory\
-$git_state\
-${custom.git_log}\
-$git_status\
-$line_break\
-$python\
-$env_var\
-$terraform\
-$aws\
-$character
+$time$status$cmd_duration$line_break\
+${custom.github}${custom.heroku}$git_branch$git_commit$directory$git_state${custom.git_log} $git_status$line_break\
+$python$character\
 """
 
-[aws]
-format = '[$symbol$profile]($style) '
-symbol = " "
+[time]
+format = "[$time]($style)"
+time_format = " %Y-%m-%d  %H:%M:%SZ"
+utc_time_offset = "0"
+disabled = false
+style = ""
 
-[character]
-format = "$symbol "
+[status]
+disabled = false
+format = "[ $symbol $status]($style)"
 
 [cmd_duration]
-format = "[祥$duration]($style)"
+format = "[ 祥$duration]($style)"
 style = "yellow"
 
+[custom.github]
+symbol = " "
+command = 'git config --get-regexp remote github.com | sed -En "s/.+[/:]([^\]+)\/([^/]+)\.git$/\1\/\2\:/p"'
+when = "git config --get-regexp remote github.com"
+format = "[$symbol($output)]($syle)"
+
+[custom.heroku]
+symbol = " "
+command = 'git config --get-regexp remote heroku.com | sed -En "s/.+\/([^/]+)\.git$/\1\:/p"'
+when = "git config --get-regexp remote heroku.com"
+format = "[$symbol($output)]($syle)"
+
 [directory]
-truncation_length = 0
-truncation_symbol = ""
-truncate_to_repo = false
+truncate_to_repo = true
 home_symbol = " "
 read_only = "  "
 style = ""
+repo_root_format = "[$path]($style)"
+repo_root_style = ""
 
 [directory.substitutions]
-" /code/kraken-core" = ""
-" /code/octocloud" = ""
-" /code/dotfiles" = ""
-
-[env_var]
-format = "[$symbol$env_value]($style) "
-style = "yellow"
-symbol = "漣"
-variable = "DJANGO_CONFIGURATION"
-
-[custom.github]
-command = 'git remote get-url github | sed -En "s/https:\/\/.+\/(.+)\/(.+)(.git)$/\1\/\2\:/p"'
-when = "git remote get-url github"
-symbol = " "
-format = "[$symbol($output)]($style)"
-style = ""
-
-[custom.heroku]
-command = 'git remote get-url heroku | sed -En "s/https:\/\/.+\/(.+)\/(.+)(.git)$/\1\/\2\:/p"'
-when = "git remote get-url heroku"
-symbol = ":"
-format = "[$symbol($output)]($style)"
-style = ""
+" /Dropbox" = " "
 
 [git_branch]
-format = "[$symbol$branch]($style)"
 symbol = ""
+format = "[$symbol$branch]($style)"
 style = "bold blue"
 
 [git_commit]
@@ -76,7 +56,7 @@ format = "([\\[$tag\\]]($style))"
 command = 'git log master..HEAD --oneline | wc -l'
 when = 'git log master..HEAD -1 --oneline | grep .'
 symbol = " "
-format = "[$symbol($output)]($style) "
+format = " [$symbol($output)]($style)"
 style = "green"
 
 [git_status]
@@ -94,18 +74,6 @@ diverged = "[ $ahead_count](green) [ $behind_count](green) "
 disabled = false
 
 [python]
-format = '[${symbol}$virtualenv]($style) '
-symbol = " "
-style = "blue"
-
-[status]
-disabled = false
-format = "[$symbol $status]($style) "
-
-[time]
-format = "[$time]($style)"
-time_format = " %Y-%m-%d  %H:%M:%SZ "
-utc_time_offset = "0"
-disabled = false
-style = ""
+symbol = " "
+format = "[$symbol$virtualenv]($style) "
 
