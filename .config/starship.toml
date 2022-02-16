@@ -1,6 +1,6 @@
 format = """
 $time$status$cmd_duration$line_break\
-${custom.github}${custom.heroku}$git_branch$git_commit$directory$git_state${custom.git_log} $git_status$line_break\
+${custom.github}${custom.heroku}$git_branch$directory$git_state${custom.git_log} $git_status$line_break\
 $python$character\
 """
 
@@ -46,11 +46,6 @@ repo_root_style = ""
 symbol = ""
 format = "[$symbol$branch]($style)"
 style = "bold blue"
-
-[git_commit]
-tag_disabled = false
-only_detached = false
-format = "([\\[$tag\\]]($style))"
 
 [custom.git_log]
 command = 'git log master..HEAD --oneline | wc -l'
