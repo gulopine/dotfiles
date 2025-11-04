@@ -2,7 +2,6 @@ eval "$(starship init zsh)"
 
 export WORKON_HOME=$HOME/.virtualenvs
 export PROJECT_HOME=$HOME/code
-export KRAKEN_INSTANCE=OEUS
 
 source ~/.utils.sh
 
